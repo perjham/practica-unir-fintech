@@ -5,6 +5,7 @@ Organization: UNIR
 
 import os
 import sys
+from collections import Counter  # <-- se añade para contar ocurrencias
 
 DEFAULT_FILENAME = "words.txt"
 DEFAULT_DUPLICATES = False
@@ -22,12 +23,21 @@ def remove_duplicates_from_list(items):
     return list(set(items))
 
 
+
 def save_to_file(items, filename):
     """Guarda la lista de palabras ordenadas en un archivo."""
     with open(filename, "w") as file:
         for item in items:
             file.write(item + "\n")
     print(f"Se ha guardado el resultado en {filename}")
+
+def get_top_frequent_words(words, top_n=3):
+    """
+    Cuenta las palabras y retorna las más frecuentes.
+    """
+    counter = Counter(words)
+    return counter.most_common(top_n)
+
 
 
 if __name__ == "__main__":
@@ -64,9 +74,18 @@ if __name__ == "__main__":
     if remove_duplicates:
         word_list = remove_duplicates_from_list(word_list)
 
+
     # Ordenar la lista de palabras
     sorted_words = sort_list(word_list)
 
     # Guardar el resultado en un archivo
     save_to_file(sorted_words, output_filename)
+
+    print("Lista ordenada:")
+    print(sort_list(word_list))
+
+    print("\nPalabras más frecuentes:")
+    for word, count in get_top_frequent_words(word_list):
+        print(f"{word}: {count} veces")
+
 
